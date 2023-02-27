@@ -1,4 +1,8 @@
 preset: laravel
 
+enabled:
+  - align_double_arrow
+
 disabled:
+  - unused_use
   - single_class_element_per_statement

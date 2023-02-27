@@ -1,9 +1,14 @@
 {
-    "name": "shvetsgroup/laravel-email-database-log",
-    "description": "A simple database logger for all outgoing emails sent by Laravel website.",
+    "name": "jeremykenedy/laravel-email-database-log",
+    "description": "A database logger for all outgoing emails sent by your Laravel application.",
     "keywords": ["laravel", "markdown", "mail"],
     "license": "MIT",
+    "type": "package",
     "authors": [
+        {
+            "name": "Jeremy Kenedy",
+            "email": "jeremykenedy@gmail.com"
+        },
         {
             "name": "Alexander Shvets",
             "email": "neochief@shvetsgroup.com"
@@ -15,23 +20,23 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
-        "illuminate/support": "^9.0",
-        "doctrine/dbal": "^3.3",
-        "nesbot/carbon": "^2.0"
+        "php": "^8.0.2|^8.1|^8.2",
+        "illuminate/support": "^8.5|^9.0|^10.0",
+        "doctrine/dbal": "^3.6",
+        "nesbot/carbon": "^2.66",
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0",
-        "phpunit/phpunit": "^9.0"
+        "orchestra/testbench": "^7.0|^8.0",
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
-        "psr-0": {
-            "ShvetsGroup\\LaravelEmailDatabaseLog\\": "src/"
+        "psr-4": {
+            "jeremykenedy\\LaravelEmailDatabaseLog\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ShvetsGroup\\LaravelEmailDatabaseLog\\Tests\\": "tests"
+            "jeremykenedy\\LaravelEmailDatabaseLog\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -44,7 +49,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ShvetsGroup\\LaravelEmailDatabaseLog\\LaravelEmailDatabaseLogServiceProvider"
+                "jeremykenedy\\LaravelEmailDatabaseLog\\LaravelEmailDatabaseLogServiceProvider"
             ]
         }
     }
