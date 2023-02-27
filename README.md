@@ -61,26 +61,22 @@ After installation, any email sent by your application will be logged to `email_
 laravel-email-database-log
 ├── .all-contributorsrc
 ├── .github
-│   └── workflows
-│       └── master.yml
+│ └── workflows
+│     └── master.yml
 ├── .gitignore
 ├── .styleci.yml
 ├── LICENSE.md
 ├── README.md
 ├── composer.json
+├── composer.lock
 ├── phpunit.xml
 └── src
-    ├── database
-    │   └── migrations
-    │       ├── 2015_07_31_1_email_log.php
-    │       ├── 2016_09_21_001638_add_bcc_column_email_log.php
-    │       ├── 2017_11_10_001638_add_more_mail_columns_email_log.php
-    │       └── 2018_05_11_115355_use_longtext_for_attachments.php
-    └── jeremykenedy
-        └── LaravelEmailDatabaseLog
-            ├── EmailLogger.php
-            ├── LaravelEmailDatabaseLogEventServiceProvider.php
-            └── LaravelEmailDatabaseLogServiceProvider.php
+    ├── Database
+    │ └── Migrations
+    │      └── 2023_02_26_001638_create_email_log.php
+    ├── EmailLogger.php
+    ├── LaravelEmailDatabaseLogEventServiceProvider.php
+    └── LaravelEmailDatabaseLogServiceProvider.php
 ```
 
 * Tree command can be installed using brew: `brew install tree`
