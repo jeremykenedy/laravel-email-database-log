@@ -2,6 +2,7 @@
 
 namespace jeremykenedy\LaravelEmailDatabaseLog;
 
+use jeremykenedy\LaravelEmailDatabaseLog\EmailLogger;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Mail\Events\MessageSending;
 

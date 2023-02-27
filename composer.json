@@ -35,9 +35,11 @@
             "jeremykenedy\\LaravelEmailDatabaseLog\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "jeremykenedy\\LaravelEmailDatabaseLog\\Tests\\": "tests"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "jeremykenedy\\LaravelEmailDatabaseLog\\LaravelEmailDatabaseLogServiceProvider"
+            ]
         }
     },
     "scripts": {
@@ -48,13 +50,6 @@
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "jeremykenedy\\LaravelEmailDatabaseLog\\LaravelEmailDatabaseLogServiceProvider"
-            ]
         }
     }
 }
