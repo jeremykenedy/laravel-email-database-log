@@ -1,6 +1,6 @@
 <?php
 
-namespace ShvetsGroup\LaravelEmailDatabaseLog\Tests\Mail;
+namespace jeremykenedy\LaravelEmailDatabaseLog\Tests\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -29,7 +29,7 @@ class TestMail extends Mailable
     public function build()
     {
         return $this
-	        ->subject('The e-mail subject')
-	        ->html('<p>Some random string.</p>');
+            ->subject('The e-mail subject')
+            ->html('<p>Some random string.</p>');
     }
 }

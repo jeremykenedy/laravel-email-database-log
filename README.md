@@ -1,40 +1,104 @@
 # Laravel Email Database Log
+A database logger for all outgoing emails sent by your Laravel application.
 
-A simple database logger for all outgoing emails sent by Laravel website.
+[![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+[![StyleCI](https://github.styleci.io/repos/82768379/shield?branch=master)](https://github.styleci.io/repos/82768379)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+<a href="https://www.patreon.com/bePatron?u=10119959" title="Become a Patreon">
+    <img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patreon" width="85px" >
+</a>
 
-# Installation
+#### Table of contents
+- [Requirements](#requirements)
+- [Installation Instructions](#installation-instructions)
+    - [Publish All Assets](#publish-all-assets)
+- [Usage](#usage)
+- [File Tree](#file-tree)
+- [License](#license)
+- [Contributors](#contributors)
 
-## Step 1: Composer
+### Requirements
+* [Laravel 5.5, 5.6, 5.7, 5.8, 6.0+, 7.0+, 8.0+, 9.0+, or 10.0+](https://laravel.com/docs/installation)
 
-Laravel Email Database Log can be installed via [composer](http://getcomposer.org) by running this line in terminal:
+### Installation Instructions
+1. From your projects root folder in terminal run:
 
-```bash
-composer require shvetsgroup/laravel-email-database-log
-```
+    ```bash
+        composer require jeremykenedy/laravel-email-database-log
+    ```
 
-## Step 2: Configuration
+2. Register the package
 
-You can skip this step if your version of Laravel is 5.5 or above. Otherwise, you have to add the following to your config/app.php in the providers array:
+* Laravel 5.5 and up
+Uses package auto discovery feature, no need to edit the `config/app.php` file.
+
+* Laravel 5.4 and below
+Register the package with laravel in `config/app.php` under `providers` with the following:
 
 ```php
-'providers' => [
-    // ...
-    ShvetsGroup\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogServiceProvider::class,
-],
+    'providers' => [
+        // ...
+        jeremykenedy\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogServiceProvider::class,
+    ];
 ```
 
-## Step 3: Migration
+3. Publish the packages migration files by running the following from your projects root folder:
 
-Publish migration files:
 ```bash
 php artisan vendor:publish --tag=laravel-email-database-log-migration
 ```
 
-Now, run this in terminal:
+4. From your projects root folder in terminal run the migration:
+
 ```bash
 php artisan migrate
 ```
 
-# Usage
+### Usage
+After installation, any email sent by your application will be logged to `email_log` table in the site's database.
 
-After installation, any email sent by your website will be logged to `email_log` table in the site's database.
+### File Tree
+```bash
+laravel-email-database-log
+├── .all-contributorsrc
+├── .github
+│   └── workflows
+│       └── master.yml
+├── .gitignore
+├── .styleci.yml
+├── LICENSE.md
+├── README.md
+├── composer.json
+├── phpunit.xml
+└── src
+    ├── database
+    │   └── migrations
+    │       ├── 2015_07_31_1_email_log.php
+    │       ├── 2016_09_21_001638_add_bcc_column_email_log.php
+    │       ├── 2017_11_10_001638_add_more_mail_columns_email_log.php
+    │       └── 2018_05_11_115355_use_longtext_for_attachments.php
+    └── jeremykenedy
+        └── LaravelEmailDatabaseLog
+            ├── EmailLogger.php
+            ├── LaravelEmailDatabaseLogEventServiceProvider.php
+            └── LaravelEmailDatabaseLogServiceProvider.php
+```
+
+* Tree command can be installed using brew: `brew install tree`
+* File tree generated using command `tree -a -I '.git|node_modules|vendor|storage|tests'`
+
+### License
+Laravel Email Database Log is licensed under the [MIT license](https://opensource.org/licenses/MIT). Enjoy!
+
+### Contributors
+Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars0.githubusercontent.com/u/6244570?v=4" width="100px;" alt="Jeremy Kenedy"/><br /><sub><b>Jeremy Kenedy</b></sub>](http://jeremykenedy.github.io/)<br />[💻](https://github.com/jeremykenedy/laravel-email-database-log/commits?author=jeremykenedy "Code") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+* This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+* Please feel free to contribute and make pull requests!
