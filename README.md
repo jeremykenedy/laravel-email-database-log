@@ -1,7 +1,7 @@
 # Laravel Email Database Log
 A database logger for all outgoing emails sent by your Laravel application.
 
-[![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+[![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-email-database-log/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-email-database-log)
 [![StyleCI](https://github.styleci.io/repos/82768379/shield?branch=master)](https://github.styleci.io/repos/82768379)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
@@ -16,7 +16,6 @@ A database logger for all outgoing emails sent by your Laravel application.
 - [Usage](#usage)
 - [File Tree](#file-tree)
 - [License](#license)
-- [Contributors](#contributors)
 
 ### Requirements
 * [Laravel 5.5, 5.6, 5.7, 5.8, 6.0+, 7.0+, 8.0+, 9.0+, or 10.0+](https://laravel.com/docs/installation)
@@ -90,15 +89,3 @@ laravel-email-database-log
 
 ### License
 Laravel Email Database Log is licensed under the [MIT license](https://opensource.org/licenses/MIT). Enjoy!
-
-### Contributors
-Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-| [<img src="https://avatars0.githubusercontent.com/u/6244570?v=4" width="100px;" alt="Jeremy Kenedy"/><br /><sub><b>Jeremy Kenedy</b></sub>](http://jeremykenedy.github.io/)<br />[💻](https://github.com/jeremykenedy/laravel-email-database-log/commits?author=jeremykenedy "Code") |
-| :---: |
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-* This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-* Please feel free to contribute and make pull requests!
