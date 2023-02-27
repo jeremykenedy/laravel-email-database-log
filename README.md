@@ -4,7 +4,6 @@ A database logger for all outgoing emails sent by your Laravel application.
 [![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-email-database-log/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-email-database-log)
 [![StyleCI](https://github.styleci.io/repos/606927458/shield?branch=master)](https://github.styleci.io/repos/606927458?branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 <a href="https://www.patreon.com/bePatron?u=10119959" title="Become a Patreon">
     <img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patreon" width="85px" >
 </a>
