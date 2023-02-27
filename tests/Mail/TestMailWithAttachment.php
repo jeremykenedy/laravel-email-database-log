@@ -30,7 +30,7 @@ class TestMailWithAttachment extends Mailable
     {
         return $this
             ->subject('The e-mail subject')
-            ->attach(__DIR__ . '/../stubs/demo.txt')
+            ->attach(__DIR__.'/../stubs/demo.txt')
             ->html('<p>Some random string.</p>');
     }
 }

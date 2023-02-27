@@ -3,17 +3,17 @@
 namespace jeremykenedy\LaravelEmailDatabaseLog;
 
 use Carbon\Carbon;
-use Symfony\Component\Mime\Email;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\Mime\Part\DataPart;
 use Illuminate\Mail\Events\MessageSending;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 
 class EmailLogger
 {
     /**
      * Handle the actual logging.
      *
-     * @param MessageSending $event
+     * @param  MessageSending  $event
      * @return void
      */
     public function handle(MessageSending $event): void
@@ -21,14 +21,14 @@ class EmailLogger
         $message = $event->message;
 
         DB::table('email_log')->insert([
-            'date' => Carbon::now()->format('Y-m-d H:i:s'),
-            'from' => $this->formatAddressField($message, 'From'),
-            'to' => $this->formatAddressField($message, 'To'),
-            'cc' => $this->formatAddressField($message, 'Cc'),
-            'bcc' => $this->formatAddressField($message, 'Bcc'),
-            'subject' => $message->getSubject(),
-            'body' => $message->getBody()->bodyToString(),
-            'headers' => $message->getHeaders()->toString(),
+            'date'        => Carbon::now()->format('Y-m-d H:i:s'),
+            'from'        => $this->formatAddressField($message, 'From'),
+            'to'          => $this->formatAddressField($message, 'To'),
+            'cc'          => $this->formatAddressField($message, 'Cc'),
+            'bcc'         => $this->formatAddressField($message, 'Bcc'),
+            'subject'     => $message->getSubject(),
+            'body'        => $message->getBody()->bodyToString(),
+            'headers'     => $message->getHeaders()->toString(),
             'attachments' => $this->saveAttachments($message),
         ]);
     }
@@ -36,8 +36,8 @@ class EmailLogger
     /**
      * Format address strings for sender, to, cc, bcc.
      *
-     * @param Email $message
-     * @param string $field
+     * @param  Email  $message
+     * @param  string  $field
      * @return null|string
      */
     public function formatAddressField(Email $message, string $field): ?string
@@ -50,7 +50,7 @@ class EmailLogger
     /**
      * Collect all attachments and format them as strings.
      *
-     * @param Email $message
+     * @param  Email  $message
      * @return string|null
      */
     protected function saveAttachments(Email $message): ?string
@@ -60,7 +60,7 @@ class EmailLogger
         }
 
         return collect($message->getAttachments())
-            ->map(fn(DataPart $part) => $part->toString())
+            ->map(fn (DataPart $part) => $part->toString())
             ->implode("\n\n");
     }
 }
