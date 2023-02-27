@@ -8,8 +8,6 @@ class LaravelEmailDatabaseLogServiceProvider extends ServiceProvider
 {
     /**
      * Register any other events for your application.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -18,17 +16,17 @@ class LaravelEmailDatabaseLogServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {
         $this->app->register(LaravelEmailDatabaseLogEventServiceProvider::class);
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
+            $this->publishes(
+                [
                 __DIR__.'/../../database/migrations' => database_path('migrations'),
-            ], 'laravel-email-database-log-migration');
+                ], 'laravel-email-database-log-migration'
+            );
         }
     }
 }
