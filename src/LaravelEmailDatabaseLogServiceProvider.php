@@ -2,8 +2,8 @@
 
 namespace jeremykenedy\LaravelEmailDatabaseLog;
 
-use jeremykenedy\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogEventServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use jeremykenedy\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogEventServiceProvider;
 
 class LaravelEmailDatabaseLogServiceProvider extends ServiceProvider
 {
