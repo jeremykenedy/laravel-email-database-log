@@ -14,7 +14,7 @@ class AddMoreMailColumnsEmailLog extends Migration
     public function up(): void
     {
         Schema::table('email_log', function ($table) {
-            if (!Schema::hasColumn('email_log', 'id')) {
+            if (! Schema::hasColumn('email_log', 'id')) {
                 $table->increments('id')->first();
                 $table->string('from')->after('date')->nullable();
                 $table->string('cc')->after('to')->nullable();
