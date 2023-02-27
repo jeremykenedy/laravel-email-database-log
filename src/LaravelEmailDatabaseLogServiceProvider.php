@@ -25,7 +25,7 @@ class LaravelEmailDatabaseLogServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes(
                 [
-                __DIR__.'/../../database/migrations' => database_path('migrations'),
+                __DIR__.'/../Database/Migrations' => database_path('migrations'),
                 ], 'laravel-email-database-log-migration'
             );
         }
