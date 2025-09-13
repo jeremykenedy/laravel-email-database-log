@@ -98,7 +98,7 @@ class LaravelEmailDatabaseTest extends TestCase
         $log = DB::table('email_log')->first();
 
         // TODO: Is there a beter way to tests this ?
-        $encoded = (new Base64Encoder)->encodeString(file_get_contents(__DIR__ . '/../stubs/demo.txt'));
+        $encoded = (new Base64Encoder)->encodeString(file_get_contents(__DIR__.'/../stubs/demo.txt'));
 
         $this->assertStringContainsString('Content-Type: text/plain; name=demo.txt', $log->attachments);
         $this->assertStringContainsString('Content-Transfer-Encoding: base64', $log->attachments);
