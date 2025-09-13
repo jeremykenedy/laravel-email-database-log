@@ -20,19 +20,24 @@
         }
     ],
     "require": {
-        "php": "^8.0.2|^8.1|^8.2",
-        "illuminate/support": "^8.5|^9.0|^10.0",
+        "php": "^8.0",
+        "illuminate/support": "^8.5|^9.0|^10.0|^12.0",
         "doctrine/dbal": "^3.6",
-        "nesbot/carbon": "^2.66"
+        "nesbot/carbon": "^2.66|^3.8"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.0",
-        "phpunit/phpunit": "^10.0",
+        "orchestra/testbench": "^8.0|^10.0",
+        "phpunit/phpunit": "^10.0|^12.0",
         "suin/phpcs-psr4-sniff": "^3.0"
     },
     "autoload": {
         "psr-4": {
             "jeremykenedy\\LaravelEmailDatabaseLog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "jeremykenedy\\LaravelEmailDatabaseLog\\Tests\\": "tests/"
         }
     },
     "extra": {
