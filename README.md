@@ -17,7 +17,7 @@ A database logger for all outgoing emails sent by your Laravel application.
 - [License](#license)
 
 ### Requirements
-* [Laravel 5.5, 5.6, 5.7, 5.8, 6.0+, 7.0+, 8.0+, 9.0+, or 10.0+](https://laravel.com/docs/installation)
+* [Laravel 5.5, 5.6, 5.7, 5.8, 6.0+, 7.0+, 8.0+, 9.0+, 10.0+, 11.0+, or 12.0+](https://laravel.com/docs/installation)
 
 ### Installation Instructions
 1. From your projects root folder in terminal run:
