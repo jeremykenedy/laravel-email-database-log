@@ -61,8 +61,8 @@ After installation, any email sent by your application will be logged to `email_
 laravel-email-database-log
 ├── .all-contributorsrc
 ├── .github
-│ └── workflows
-│     └── master.yml
+│   └── workflows
+│       └── master.yml
 ├── .gitignore
 ├── .styleci.yml
 ├── LICENSE.md
@@ -72,8 +72,8 @@ laravel-email-database-log
 ├── phpunit.xml
 └── src
     ├── Database
-    │ └── Migrations
-    │      └── 2023_02_26_001638_create_email_log.php
+    │   └── Migrations
+    │       └── 2023_02_26_001638_create_email_log.php
     ├── EmailLogger.php
     ├── LaravelEmailDatabaseLogEventServiceProvider.php
     └── LaravelEmailDatabaseLogServiceProvider.php
