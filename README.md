@@ -9,15 +9,16 @@ A database logger for all outgoing emails sent by your Laravel application.
 </a>
 
 #### Table of contents
-- [Requirements](#requirements)
-- [Installation Instructions](#installation-instructions)
-    - [Publish All Assets](#publish-all-assets)
-- [Usage](#usage)
-- [File Tree](#file-tree)
-- [License](#license)
+- [Laravel Email Database Log](#laravel-email-database-log)
+      - [Table of contents](#table-of-contents)
+    - [Requirements](#requirements)
+    - [Installation Instructions](#installation-instructions)
+    - [Usage](#usage)
+    - [File Tree](#file-tree)
+    - [License](#license)
 
 ### Requirements
-* [Laravel 5.5, 5.6, 5.7, 5.8, 6.0+, 7.0+, 8.0+, 9.0+, 10.0+, 11.0+, or 12.0+](https://laravel.com/docs/installation)
+* [Laravel 5.5, 5.6, 5.7, 5.8, 6.0+, 7.0+, 8.0+, 9.0+, 10.0+, 11.0+, 12.0+ or 13.0+](https://laravel.com/docs/installation)
 
 ### Installation Instructions
 1. From your projects root folder in terminal run:
