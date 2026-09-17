@@ -30,7 +30,6 @@ Homestead.json
 ### Master Configs ###
 .env
 composer.lock
-package-lock.json
 yarn.lock
 
 
@@ -53,3 +52,10 @@ composer.lock
 # Debug Files
 npm-debug.log
 yarn-error.log
+
+/coverage/
+/.phpunit.cache/
+/.pint.cache
+/test-results/
+/playwright-report/
+/tests/Browser/tailwind.css

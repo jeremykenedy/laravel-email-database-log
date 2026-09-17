@@ -1,0 +1,17 @@
+{
+  "name": "laravel-email-database-log-tests",
+  "private": true,
+  "scripts": {
+    "build:test-css": "tailwindcss -i tests/Browser/tailwind.input.css -o tests/Browser/tailwind.css --minify",
+    "test": "npm run build:test-css && playwright test",
+    "lint": "node --check resources/js/theme.js && prettier --check resources/css/dashboard.css resources/js/theme.js tests/Browser/*.js playwright.config.js package.json"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/cli": "4.3.3",
+    "bootstrap": "5.3.8",
+    "prettier": "3.8.4",
+    "tailwindcss": "4.3.3"
+  }
+}
