@@ -3,10 +3,11 @@
 namespace jeremykenedy\LaravelEmailDatabaseLog\Tests\Feature;
 
 use Illuminate\Auth\GenericUser;
-use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use jeremykenedy\LaravelEmailDatabaseLog\Http\Controllers\EmailLogController;
+use jeremykenedy\LaravelEmailDatabaseLog\Http\Middleware\AuthorizeEmailLog;
 use jeremykenedy\LaravelEmailDatabaseLog\Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -50,9 +51,10 @@ class DashboardTest extends TestCase
 
     public function test_authorization_is_required_even_without_auth_middleware(): void
     {
-        $this->withoutMiddleware(Authenticate::class);
+        $this->app['router']->get('/unguarded-email-log', [EmailLogController::class, 'index'])
+            ->middleware(['web', AuthorizeEmailLog::class]);
         Gate::define('viewEmailLog', fn () => true);
-        $this->get('/email-log')->assertForbidden();
+        $this->get('/unguarded-email-log')->assertForbidden();
     }
 
     public function test_gate_denials_apply_to_list_and_details(): void
