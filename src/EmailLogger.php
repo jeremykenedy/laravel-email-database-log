@@ -12,13 +12,16 @@ class EmailLogger
 {
     /**
      * Handle the actual logging.
-     *
-     * @param  MessageSending  $event
-     * @return void
      */
     public function handle(MessageSending $event): void
     {
         $message = $event->message;
+
+        if ($message instanceof \Swift_Message) {
+            $this->logSwiftMessage($message);
+
+            return;
+        }
 
         DB::table('email_log')->insert(
             [
@@ -27,8 +30,8 @@ class EmailLogger
                 'to'          => $this->formatAddressField($message, 'To'),
                 'cc'          => $this->formatAddressField($message, 'Cc'),
                 'bcc'         => $this->formatAddressField($message, 'Bcc'),
-                'subject'     => $message->getSubject(),
-                'body'        => $message->getBody()->bodyToString(),
+                'subject'     => $message->getSubject() ?? '',
+                'body'        => $message->getBody()?->bodyToString() ?? '',
                 'headers'     => $message->getHeaders()->toString(),
                 'attachments' => $this->saveAttachments($message),
             ]
@@ -37,10 +40,6 @@ class EmailLogger
 
     /**
      * Format address strings for sender, to, cc, bcc.
-     *
-     * @param  Email  $message
-     * @param  string  $field
-     * @return null|string
      */
     public function formatAddressField(Email $message, string $field): ?string
     {
@@ -51,9 +50,6 @@ class EmailLogger
 
     /**
      * Collect all attachments and format them as strings.
-     *
-     * @param  Email  $message
-     * @return string|null
      */
     protected function saveAttachments(Email $message): ?string
     {
@@ -64,5 +60,25 @@ class EmailLogger
         return collect($message->getAttachments())
             ->map(fn (DataPart $part) => $part->toString())
             ->implode("\n\n");
+    }
+
+    protected function logSwiftMessage(\Swift_Message $message): void
+    {
+        $address = fn (string $field) => $message->getHeaders()->get($field)?->getFieldBody();
+        $attachments = collect($message->getChildren())
+            ->filter(fn ($part) => $part instanceof \Swift_Attachment)
+            ->map(fn ($part) => $part->toString());
+
+        DB::table('email_log')->insert([
+            'date'        => Carbon::now()->format('Y-m-d H:i:s'),
+            'from'        => $address('From'),
+            'to'          => $address('To'),
+            'cc'          => $address('Cc'),
+            'bcc'         => $address('Bcc'),
+            'subject'     => $message->getSubject() ?? '',
+            'body'        => $message->getBody() ?? '',
+            'headers'     => $message->getHeaders()->toString(),
+            'attachments' => $attachments->isEmpty() ? null : $attachments->implode("\n\n"),
+        ]);
     }
 }

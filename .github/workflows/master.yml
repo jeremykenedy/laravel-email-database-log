@@ -1,56 +1,172 @@
 name: run-tests
 
 on:
-    push:
-        branches: [master]
-    pull_request:
-        branches: [master]
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-    test:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: true
-            matrix:
-                os: [ubuntu-latest, windows-latest]
-                php: [8.1, 8.2, 8.3, 8.4]
-                laravel: [10.*, 11.*, 12.*]
-                stability: [prefer-stable]
-                include:
-                    - laravel: 10.*
-                      testbench: ^8.0
-                    - laravel: 11.*
-                      testbench: ^9.0
-                    - laravel: 12.*
-                      testbench: ^10.0
-                exclude:
-                    - php: 8.1
-                      laravel: 12.*
-                    - php: 8.1
-                      laravel: 11.*
-                    - php: 8.4
-                      laravel: 10.*
+  test:
+    name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }} / ${{ matrix.dependencies }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {php: '8.0', laravel: '8.*', testbench: '^6.47.1', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.1', laravel: '8.*', testbench: '^6.47.1', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.0', laravel: '9.*', testbench: '^7.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.1', laravel: '9.*', testbench: '^7.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.2', laravel: '9.*', testbench: '^7.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.1', laravel: '10.*', testbench: '^8.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.2', laravel: '10.*', testbench: '^8.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.3', laravel: '10.*', testbench: '^8.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.2', laravel: '11.*', testbench: '^9.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.3', laravel: '11.*', testbench: '^9.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.4', laravel: '11.*', testbench: '^9.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.2', laravel: '12.*', testbench: '^10.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.3', laravel: '12.*', testbench: '^10.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.4', laravel: '12.*', testbench: '^10.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.5', laravel: '12.*', testbench: '^10.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.3', laravel: '13.*', testbench: '^11.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.4', laravel: '13.*', testbench: '^11.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.5', laravel: '13.*', testbench: '^11.0', dependencies: stable, os: ubuntu-latest}
+          - {php: '8.0', laravel: '8.*', testbench: '^6.47.1', dependencies: lowest, os: ubuntu-latest, legacy: true}
+          - {php: '8.0', laravel: '9.*', testbench: '^7.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
+          - {php: '8.1', laravel: '10.*', testbench: '^8.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
+          - {php: '8.2', laravel: '11.*', testbench: '^9.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
+          - {php: '8.2', laravel: '12.*', testbench: '^10.0', dependencies: lowest, os: ubuntu-latest}
+          - {php: '8.3', laravel: '13.*', testbench: '^11.0', dependencies: lowest, os: ubuntu-latest}
+          - {php: '8.0', laravel: '8.*', testbench: '^6.47.1', dependencies: stable, os: windows-latest, legacy: true}
+          - {php: '8.4', laravel: '12.*', testbench: '^10.0', dependencies: stable, os: windows-latest}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, pdo_sqlite, dom, fileinfo
+          coverage: none
+          tools: composer:v2
+      - name: Select Laravel version
+        run: composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-update --no-interaction
+      - name: Install dependencies
+        env:
+          # Retired Laravel releases are tested for compatibility, not security support.
+          COMPOSER_NO_SECURITY_BLOCKING: ${{ matrix.legacy && '1' || '0' }}
+        run: composer update --prefer-${{ matrix.dependencies }} --prefer-dist --no-interaction
+      - name: Run suite
+        run: vendor/bin/phpunit --fail-on-warning --fail-on-risky
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
+  quality:
+    name: Lint, coverage, and dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite
+          coverage: xdebug
+      - run: composer validate --strict
+      - run: composer update --prefer-dist --no-interaction
+      - run: composer lint
+      - run: composer audit --locked
+      - run: vendor/bin/phpunit --coverage-filter src --coverage-clover coverage/clover.xml --coverage-text --fail-on-warning --fail-on-risky
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: php-coverage
+          path: coverage/clover.xml
+          retention-days: 14
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+  browser:
+    name: Browser and accessibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: composer update --prefer-dist --no-interaction
+      - run: npm ci
+      - run: npm run lint
+      - run: npm audit
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: failure()
+        with:
+          name: browser-failures
+          path: test-results/
+          retention-days: 14
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-                  coverage: none
+  ui-kit:
+    name: Optional Laravel UI Kit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+      - run: composer require --dev jeremykenedy/laravel-ui-kit --no-interaction
+      - run: vendor/bin/phpunit --fail-on-warning --fail-on-risky
 
-            - name: Setup problem matchers
-              run: |
-                  echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-                  echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-            - name: Install dependencies
-              run: |
-                  composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                  composer update --${{ matrix.stability }} --prefer-dist --no-interaction
-            - name: Execute tests
-              run: vendor/bin/phpunit
+  database:
+    name: Database / ${{ matrix.connection }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        connection: [mysql, pgsql]
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: email_log_test
+          MYSQL_ROOT_PASSWORD: test_password
+        ports: ['3306:3306']
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1" --health-interval=10s --health-timeout=5s --health-retries=10
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: email_log_test
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: test_password
+        ports: ['5432:5432']
+        options: --health-cmd="pg_isready -U root -d email_log_test" --health-interval=10s --health-timeout=5s --health-retries=10
+    env:
+      DB_CONNECTION: ${{ matrix.connection }}
+      DB_DATABASE: email_log_test
+      DB_HOST: 127.0.0.1
+      DB_USERNAME: root
+      DB_PASSWORD: test_password
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_mysql, pdo_pgsql
+          coverage: none
+      - run: composer update --prefer-dist --no-interaction
+      - run: vendor/bin/phpunit --fail-on-warning --fail-on-risky

@@ -7,18 +7,15 @@
   colors="true"
   processIsolation="false"
   stopOnFailure="false"
-  backupStaticProperties="false"
 >
   <testsuites>
-    <!--<testsuite name="Unit">
-      <directory suffix="Test.php">./tests/Unit</directory>
-    </testsuite>-->
     <testsuite name="Feature">
       <directory suffix="Test.php">./tests/Feature</directory>
     </testsuite>
   </testsuites>
   <php>
     <server name="APP_ENV" value="testing"/>
+    <server name="APP_KEY" value="base64:MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI="/>
     <server name="BCRYPT_ROUNDS" value="4"/>
     <server name="CACHE_DRIVER" value="array"/>
     <server name="DB_CONNECTION" value="sqlite"/>
@@ -28,9 +25,4 @@
     <server name="QUEUE_CONNECTION" value="sync"/>
     <server name="SESSION_DRIVER" value="array"/>
   </php>
-  <source>
-    <include>
-      <directory suffix=".php">src/</directory>
-    </include>
-  </source>
 </phpunit>
