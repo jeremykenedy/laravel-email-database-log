@@ -104,3 +104,15 @@ test("README screenshots", async ({ page }) => {
     });
   }
 });
+
+test("invalid saved appearance falls back to the configured theme", async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem("email-log-theme", "invalid"),
+  );
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/email-log");
+  await expect(page.locator("html")).toHaveAttribute("data-bs-theme", "dark");
+  await expect(page.getByLabel("Appearance")).toHaveValue("system");
+});

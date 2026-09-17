@@ -146,4 +146,15 @@ class SetupCommandTest extends TestCase
             ->expectsConfirmation('Use the optional, separately installed Laravel UI Kit?', 'no')
             ->assertExitCode(0);
     }
+
+    public function test_installed_ui_kit_can_be_selected_without_changing_its_configuration(): void
+    {
+        if (! class_exists('Jeremykenedy\\LaravelUiKit\\Providers\\UiKitServiceProvider')) {
+            $this->markTestSkipped('Optional UI Kit integration is covered in its own CI job.');
+        }
+        $original = config('ui-kit');
+        $this->assertSame(0, $this->runCommand('email-log:install', ['--framework' => 'bootstrap5', '--ui-kit' => true]));
+        $this->assertTrue($this->settings()['ui_kit']);
+        $this->assertSame($original, config('ui-kit'));
+    }
 }

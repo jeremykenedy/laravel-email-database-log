@@ -7,7 +7,7 @@
   var preference = root.getAttribute("data-email-log-theme") || "system";
 
   function apply(value) {
-    if (["light", "dark", "system"].indexOf(value) === -1) return;
+    if (["light", "dark", "system"].indexOf(value) === -1) value = preference;
     preference = value;
     var resolved =
       value === "system" ? (system.matches ? "dark" : "light") : value;
