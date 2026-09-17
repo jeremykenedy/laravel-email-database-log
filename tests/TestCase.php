@@ -19,9 +19,12 @@ class TestCase extends \Orchestra\Testbench\TestCase
         parent::tearDown();
     }
 
-    protected function defineDatabaseMigrations()
+    protected function getEnvironmentSetUp($app)
     {
-        $this->loadMigrationsFrom(__DIR__.'/../src/Database/Migrations');
+        $app['config']->set('database.default', env('DB_CONNECTION', 'sqlite'));
+        $app->afterResolving('migrator', function ($migrator) {
+            $migrator->path(__DIR__.'/../src/Database/Migrations');
+        });
     }
 
     protected function getPackageProviders($app)

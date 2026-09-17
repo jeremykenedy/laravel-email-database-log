@@ -3,7 +3,7 @@
 namespace jeremykenedy\LaravelEmailDatabaseLog\Tests\Feature;
 
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -15,7 +15,7 @@ use Symfony\Component\Mime\Email;
 
 class LoggingCompatibilityTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function test_plain_text_mail_and_custom_headers_are_recorded_once(): void
     {
@@ -58,7 +58,8 @@ class LoggingCompatibilityTest extends TestCase
 
     public function test_missing_subject_and_body_can_be_logged(): void
     {
-        $message = class_exists(\Swift_Message::class) ? (new \Swift_Message)->setBody('') : (new Email)->text('');
+        $message = class_exists(\Swift_Message::class) ? (new \Swift_Message)->setFrom('sender@example.com')->setTo('reader@example.com')->setBody('')
+            : (new Email)->from('sender@example.com')->to('reader@example.com')->text('');
         (new EmailLogger)->handle(new MessageSending($message));
         $this->assertDatabaseHas('email_log', ['subject' => '', 'body' => '', 'attachments' => null]);
     }

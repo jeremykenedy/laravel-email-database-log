@@ -16,7 +16,7 @@ PHPUnit test method names work across PHPUnit 9 through 13. Xdebug or PCOV is re
 
 ## CI matrix
 
-The workflow tests Laravel 8 through 13 on their compatible PHP versions, including PHP 8.0 through 8.5. Each Laravel major has a lowest-dependency job as well as current compatible dependencies. Windows jobs cover Laravel 8 and 12. A separate job installs the real optional Laravel UI Kit package and reruns the suite.
+The workflow tests Laravel 8 through 13 on their compatible PHP versions, including PHP 8.0 through 8.5. Each Laravel major has a lowest-dependency job as well as current compatible dependencies. Windows jobs cover Laravel 8 and 12. Database jobs run the suite against MySQL 8.4 and PostgreSQL 16 in addition to SQLite. A separate job installs the real optional Laravel UI Kit package and reruns the suite.
 
 Legacy Laravel 8 through 11 jobs permit Composer to resolve retired dependencies with known advisories so compatibility can still be tested. This exception exists only in those CI jobs, not in package Composer configuration. Current dependency jobs retain blocking, and a separate audit checks the current resolved dependency set. Passing legacy tests is not a claim of upstream security support.
 

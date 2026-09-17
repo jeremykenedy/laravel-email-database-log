@@ -23,8 +23,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {php: '8.0', laravel: '8.*', testbench: '^6.0', dependencies: stable, os: ubuntu-latest, legacy: true}
-          - {php: '8.1', laravel: '8.*', testbench: '^6.0', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.0', laravel: '8.*', testbench: '^6.47.1', dependencies: stable, os: ubuntu-latest, legacy: true}
+          - {php: '8.1', laravel: '8.*', testbench: '^6.47.1', dependencies: stable, os: ubuntu-latest, legacy: true}
           - {php: '8.0', laravel: '9.*', testbench: '^7.0', dependencies: stable, os: ubuntu-latest, legacy: true}
           - {php: '8.1', laravel: '9.*', testbench: '^7.0', dependencies: stable, os: ubuntu-latest, legacy: true}
           - {php: '8.2', laravel: '9.*', testbench: '^7.0', dependencies: stable, os: ubuntu-latest, legacy: true}
@@ -41,13 +41,13 @@ jobs:
           - {php: '8.3', laravel: '13.*', testbench: '^11.0', dependencies: stable, os: ubuntu-latest}
           - {php: '8.4', laravel: '13.*', testbench: '^11.0', dependencies: stable, os: ubuntu-latest}
           - {php: '8.5', laravel: '13.*', testbench: '^11.0', dependencies: stable, os: ubuntu-latest}
-          - {php: '8.0', laravel: '8.*', testbench: '^6.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
+          - {php: '8.0', laravel: '8.*', testbench: '^6.47.1', dependencies: lowest, os: ubuntu-latest, legacy: true}
           - {php: '8.0', laravel: '9.*', testbench: '^7.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
           - {php: '8.1', laravel: '10.*', testbench: '^8.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
           - {php: '8.2', laravel: '11.*', testbench: '^9.0', dependencies: lowest, os: ubuntu-latest, legacy: true}
           - {php: '8.2', laravel: '12.*', testbench: '^10.0', dependencies: lowest, os: ubuntu-latest}
           - {php: '8.3', laravel: '13.*', testbench: '^11.0', dependencies: lowest, os: ubuntu-latest}
-          - {php: '8.0', laravel: '8.*', testbench: '^6.0', dependencies: stable, os: windows-latest, legacy: true}
+          - {php: '8.0', laravel: '8.*', testbench: '^6.47.1', dependencies: stable, os: windows-latest, legacy: true}
           - {php: '8.4', laravel: '12.*', testbench: '^10.0', dependencies: stable, os: windows-latest}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -129,4 +129,44 @@ jobs:
           extensions: mbstring, pdo_sqlite
           coverage: none
       - run: composer require --dev jeremykenedy/laravel-ui-kit --no-interaction
+      - run: vendor/bin/phpunit --fail-on-warning --fail-on-risky
+
+  database:
+    name: Database / ${{ matrix.connection }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        connection: [mysql, pgsql]
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: email_log_test
+          MYSQL_ROOT_PASSWORD: test_password
+        ports: ['3306:3306']
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1" --health-interval=10s --health-timeout=5s --health-retries=10
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: email_log_test
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: test_password
+        ports: ['5432:5432']
+        options: --health-cmd="pg_isready -U root -d email_log_test" --health-interval=10s --health-timeout=5s --health-retries=10
+    env:
+      DB_CONNECTION: ${{ matrix.connection }}
+      DB_DATABASE: email_log_test
+      DB_HOST: 127.0.0.1
+      DB_USERNAME: root
+      DB_PASSWORD: test_password
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_mysql, pdo_pgsql
+          coverage: none
+      - run: composer update --prefer-dist --no-interaction
       - run: vendor/bin/phpunit --fail-on-warning --fail-on-risky

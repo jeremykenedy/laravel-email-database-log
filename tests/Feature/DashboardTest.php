@@ -87,12 +87,12 @@ class DashboardTest extends TestCase
     public function test_search_covers_subject_sender_and_recipient_and_persists_on_next_page(): void
     {
         $this->authorizeDashboard();
-        $this->record(['subject' => 'Find this']);
+        $this->record(['subject' => 'find this']);
         $this->record(['from' => 'find@example.com']);
         $this->record(['to' => 'find@example.com']);
         $this->record(['subject' => 'Unrelated']);
         $this->get('/email-log?q=find')->assertOk()->assertSee('q=find')->assertDontSee('Unrelated');
-        $this->get('/email-log?q=find&page=2')->assertOk()->assertSee('Find this');
+        $this->get('/email-log?q=find&page=2')->assertOk()->assertSee('find this');
     }
 
     public function test_search_rejects_arrays_and_oversized_input(): void

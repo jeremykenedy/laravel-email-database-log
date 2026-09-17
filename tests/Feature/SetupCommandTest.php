@@ -6,10 +6,13 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use jeremykenedy\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogServiceProvider;
 use jeremykenedy\LaravelEmailDatabaseLog\Tests\TestCase;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class SetupCommandTest extends TestCase
 {
     protected $sandbox;
+
+    protected $commandOutput;
 
     protected function setUp(): void
     {
@@ -20,7 +23,9 @@ class SetupCommandTest extends TestCase
             $files->ensureDirectoryExists($this->sandbox.'/'.$path);
         }
         $this->app->setBasePath($this->sandbox);
-        $this->app->useConfigPath($this->sandbox.'/config');
+        if (method_exists($this->app, 'useConfigPath')) {
+            $this->app->useConfigPath($this->sandbox.'/config');
+        }
         $this->app->useDatabasePath($this->sandbox.'/database');
         $this->app->instance('path.public', $this->sandbox.'/public');
         if (method_exists($this->app, 'usePublicPath')) {
@@ -37,7 +42,11 @@ class SetupCommandTest extends TestCase
 
     protected function runCommand(string $name, array $options = []): int
     {
-        return Artisan::call($name, array_merge(['--no-interaction' => true], $options));
+        $output = new BufferedOutput;
+        $result = Artisan::call($name, array_merge(['--no-interaction' => true], $options), $output);
+        $this->commandOutput = $output->fetch();
+
+        return $result;
     }
 
     protected function settings(): array
@@ -120,7 +129,7 @@ class SetupCommandTest extends TestCase
         }
         $this->assertSame(1, $this->runCommand('email-log:install', ['--framework' => 'bootstrap5', '--ui-kit' => true]));
         $this->assertFileDoesNotExist(config_path('laravel-email-database-log-ui.php'));
-        $this->assertStringContainsString('Install jeremykenedy/laravel-ui-kit separately', Artisan::output());
+        $this->assertStringContainsString('Install jeremykenedy/laravel-ui-kit separately', $this->commandOutput);
     }
 
     public function test_optional_integration_can_be_disabled(): void
