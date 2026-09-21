@@ -1,0 +1,7 @@
+{
+    "preset": "laravel",
+    "exclude": ["src/Database/Migrations"],
+    "rules": {
+        "binary_operator_spaces": {"operators": {"=>": "align_single_space_minimal"}}
+    }
+}

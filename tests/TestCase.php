@@ -2,20 +2,39 @@
 
 namespace jeremykenedy\LaravelEmailDatabaseLog\Tests;
 
+use Carbon\Carbon;
 use jeremykenedy\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
-    protected function defineDatabaseMigrations()
+    protected function setUp(): void
     {
-        // Point to the package migrations so Testbench runs them
-        $this->loadMigrationsFrom(__DIR__.'/../src/Database/Migrations');
+        parent::setUp();
+        Carbon::setTestNow('2026-09-17 12:00:00');
+    }
+
+    protected function tearDown(): void
+    {
+        Carbon::setTestNow();
+        parent::tearDown();
+    }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
+        $app['config']->set('database.default', env('DB_CONNECTION', 'sqlite'));
+        $app->afterResolving('migrator', function ($migrator) {
+            $migrator->path(__DIR__.'/../src/Database/Migrations');
+        });
     }
 
     protected function getPackageProviders($app)
     {
-        return [
-            LaravelEmailDatabaseLogServiceProvider::class,
-        ];
+        $providers = [LaravelEmailDatabaseLogServiceProvider::class];
+        if (class_exists('Jeremykenedy\\LaravelUiKit\\Providers\\UiKitServiceProvider')) {
+            array_unshift($providers, 'Jeremykenedy\\LaravelUiKit\\Providers\\UiKitServiceProvider');
+        }
+
+        return $providers;
     }
 }
