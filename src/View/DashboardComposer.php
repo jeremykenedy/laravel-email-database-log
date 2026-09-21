@@ -7,7 +7,12 @@ use Illuminate\View\View;
 
 class DashboardComposer
 {
-    public function __construct(private Repository $config) {}
+    private Repository $config;
+
+    public function __construct(Repository $config)
+    {
+        $this->config = $config;
+    }
 
     public function compose(View $view): void
     {

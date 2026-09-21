@@ -9,7 +9,12 @@ use jeremykenedy\LaravelEmailDatabaseLog\Models\EmailLog;
 
 class EmailLogController extends Controller
 {
-    public function __construct(private SearchEmailLogs $searchEmailLogs) {}
+    private SearchEmailLogs $searchEmailLogs;
+
+    public function __construct(SearchEmailLogs $searchEmailLogs)
+    {
+        $this->searchEmailLogs = $searchEmailLogs;
+    }
 
     public function index(SearchEmailLogsRequest $request)
     {
