@@ -112,8 +112,14 @@ class SetupCommandTest extends TestCase
         $this->runCommand('email-log:install', ['--publish-views' => true]);
         $path = resource_path('views/vendor/email-log/index.blade.php');
         file_put_contents($path, 'Custom view');
+        $missing = resource_path('views/vendor/email-log/show.blade.php');
+        $nested = resource_path('views/vendor/email-log/components/ui-kit-notice.blade.php');
+        unlink($missing);
+        unlink($nested);
         $this->runCommand('email-log:update', ['--publish-views' => true]);
         $this->assertSame('Custom view', file_get_contents($path));
+        $this->assertSame(file_get_contents(__DIR__.'/../../resources/views/show.blade.php'), file_get_contents($missing));
+        $this->assertSame(file_get_contents(__DIR__.'/../../resources/views/components/ui-kit-notice.blade.php'), file_get_contents($nested));
         $this->runCommand('email-log:update', ['--force-views' => true]);
         $this->assertStringContainsString('@extends', file_get_contents($path));
     }
