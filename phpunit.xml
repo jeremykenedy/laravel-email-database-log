@@ -7,12 +7,8 @@
   colors="true"
   processIsolation="false"
   stopOnFailure="false"
-  backupStaticProperties="false"
 >
   <testsuites>
-    <!--<testsuite name="Unit">
-      <directory suffix="Test.php">./tests/Unit</directory>
-    </testsuite>-->
     <testsuite name="Feature">
       <directory suffix="Test.php">./tests/Feature</directory>
     </testsuite>
@@ -28,9 +24,4 @@
     <server name="QUEUE_CONNECTION" value="sync"/>
     <server name="SESSION_DRIVER" value="array"/>
   </php>
-  <source>
-    <include>
-      <directory suffix=".php">src/</directory>
-    </include>
-  </source>
 </phpunit>

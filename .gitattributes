@@ -1,0 +1,9 @@
+/.github export-ignore
+/tests export-ignore
+/art export-ignore
+/phpunit.xml export-ignore
+/pint.json export-ignore
+/playwright.config.js export-ignore
+/package.json export-ignore
+/package-lock.json export-ignore
+/.styleci.yml export-ignore

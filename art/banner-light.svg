@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" role="img" aria-labelledby="title description">
+  <title id="title">Laravel Email Database Log</title>
+  <desc id="description">Outgoing email logging with searchable history and light and dark themes.</desc>
+  
+  <rect width="800" height="200" rx="16" fill="#fff" stroke="#e5e7eb"/>
+  <g font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+    <text x="32" y="80" fill="#0f172a" font-size="40" font-weight="700" letter-spacing="-.5" textLength="512" lengthAdjust="spacingAndGlyphs">Laravel Email Database Log</text>
+    <text x="32" y="111" fill="#64748b" font-size="14">A searchable record of your application's outgoing mail.</text>
+    <rect x="32" y="132" width="108" height="22" rx="11" fill="#f5f3ff" stroke="#6d28d9" stroke-width=".8"/>
+    <text x="86" y="147" fill="#6d28d9" font-size="10" font-weight="500" text-anchor="middle">Database logging</text>
+    <rect x="150" y="132" width="106" height="22" rx="11" fill="#eff6ff" stroke="#1e40af" stroke-width=".8"/>
+    <text x="203" y="147" fill="#1e40af" font-size="10" font-weight="500" text-anchor="middle">Searchable history</text>
+    <rect x="266" y="132" width="100" height="22" rx="11" fill="#f0fdf4" stroke="#166534" stroke-width=".8"/>
+    <text x="316" y="147" fill="#166534" font-size="10" font-weight="500" text-anchor="middle">Light and dark</text>
+  </g>
+  <g transform="translate(578 36)" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="12" width="134" height="88" rx="12" fill="#f5f3ff" stroke="#6d28d9" stroke-width="2"/>
+    <path d="M8 22 L71 64 L134 22 M8 94 L49 58 M134 94 L93 58" fill="none" stroke="#6d28d9" stroke-width="2"/>
+    <rect x="108" y="73" width="74" height="45" fill="#eff6ff"/>
+    <ellipse cx="145" cy="118" rx="37" ry="12" fill="#eff6ff" stroke="#1e40af" stroke-width="2"/>
+    <path d="M108 74 V118 M182 74 V118" fill="none" stroke="#1e40af" stroke-width="2"/>
+    <ellipse cx="145" cy="95" rx="37" ry="12" fill="#eff6ff" stroke="#1e40af" stroke-width="2"/>
+    <ellipse cx="145" cy="74" rx="37" ry="12" fill="#eff6ff" stroke="#1e40af" stroke-width="2"/>
+    <circle cx="153" cy="24" r="13" fill="#f0fdf4" stroke="#166534" stroke-width="1.5"/>
+    <path d="M147 24 L151 28 L159 20" fill="none" stroke="#166534" stroke-width="2"/>
+  </g>
+</svg>
